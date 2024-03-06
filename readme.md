@@ -51,6 +51,8 @@ https://pypi.org/project/pykiwoom/
 - 실현 계획
 1) 관심종목 리스트를 화면에 보여주기 (csv 파일로 읽어오는게 빠를것 같다)
 2) 관심종목별 시가를 확인하고, 장 시작 후 시가 아래로 갔다가 시가를 돌파할때 1차 매수 하기. 
+: case 1 - 시가 아래로 안내려 오는 경우 > 매수하지 않음
+: case 2 - 시가 근처에서 왔다 갔다 하는 경우 
 
 
 
@@ -60,3 +62,15 @@ https://doc.qt.io/qtforpython-6/examples/example_axcontainer_axviewer.html  // Q
 https://doc.qt.io/qt-5/reference-overview.html 
 https://doc.qt.io/qtforpython-5/gettingstarted.html 
 https://trustyou.tistory.com/  // 참고사이트
+https://auto-trading.tistory.com/category/%EC%A3%BC%EC%8B%9D%20%EC%9E%90%EB%8F%99%EB%A7%A4%EB%A7%A4%20%EA%B0%95%EC%9D%98
+https://cafe.naver.com/moneytuja/1212?boardType=L
+https://wikidocs.net/book/110  // 파이썬으로 배우는 알고리즘 트레이딩 (개정판-2쇄)
+
+
+
+
+- 기능개발 항목
+1. csv 파일에서 읽어서 target items 초기화 하기. (프로그램 시작시)
+i) 파일은 strategy 폴더에 있음. (target_times.csv) 
+: 한글 깨지는 문제는 확인 필요 마지막 ticker값만 얻어 오면 됨.
+: 추가적인 초기 정보 (전일가등)등은 hts에서 관심종목 필드 추가/삭제를 통해 가져 올 수 있음.  

@@ -14,17 +14,133 @@ class PBC_Buy1st (QThread):
         self.kiwoom = Kiwoom()
 
         # 주문할 ticker를 담을 딕셔너리
-        self.target_items = {
-            '종목코드' : "005930",
+        self.target_items = [
+            {
+            '종목코드' : "083450",
+            'is시가Down'     : False,    #시가 아래로 내려가면 True
+            '주문수량'       : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'       : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder'    : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음. 
+            'is시가UpAgain'     : False,    #시가 아래로 갔다 올라오면 True
+            '목표수익율'        : 2,        # 2% 수익나면 익절 
+            '매수시현재가'       : 0,     # 매수 가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+             {
+            '종목코드' : "042700",
             'is시가Down'    : False,   #시가 아래로 내려가면 True
+            '주문수량'      : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'      : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder' : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음.
             'is시가UpAgain' : False,   #시가 아래로 갔다 올라오면 True
-            '감시시작' : 0,     # 0 감시시작x 1 시작 
-            '매수여부' : 0,     # 0 매수안함, 1 매수
-            '매도여부' : 0,     # 0 매도안함, 1 매도
-            }
-        self.target_data = {
-            "0005930" : (False, False, False, False, False)
-        }
+            '목표수익율'        : 2,        # 2% 수익나면 익절
+            '매수시현재가'      : 0,     # 매수가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+            {
+            '종목코드' : "086790",
+            'is시가Down'    : False,   #시가 아래로 내려가면 True
+            '주문수량'      : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'      : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder' : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음.
+            'is시가UpAgain' : False,   #시가 아래로 갔다 올라오면 True
+            '목표수익율'        : 2,        # 2% 수익나면 익절
+            '매수시현재가'      : 0,     # 매수가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+            {
+            '종목코드' : "031980",
+            'is시가Down'    : False,   #시가 아래로 내려가면 True
+            '주문수량'      : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'      : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder' : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음.
+            'is시가UpAgain' : False,   #시가 아래로 갔다 올라오면 True
+            '목표수익율'        : 2,        # 2% 수익나면 익절
+            '매수시현재가'      : 0,     # 매수가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+            {
+            '종목코드' : "000270",
+            'is시가Down'    : False,   #시가 아래로 내려가면 True
+            '주문수량'      : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'      : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder' : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음.
+            'is시가UpAgain' : False,   #시가 아래로 갔다 올라오면 True
+            '목표수익율'        : 2,        # 2% 수익나면 익절
+            '매수시현재가'      : 0,     # 매수가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+            {
+            '종목코드' : "028300",
+            'is시가Down'    : False,   #시가 아래로 내려가면 True
+            '주문수량'      : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'      : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder' : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음.
+            'is시가UpAgain' : False,   #시가 아래로 갔다 올라오면 True
+            '목표수익율'        : 2,        # 2% 수익나면 익절
+            '매수시현재가'      : 0,     # 매수가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+            {
+            '종목코드' : "457190",
+            'is시가Down'    : False,   #시가 아래로 내려가면 True
+            '주문수량'      : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'      : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder' : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음.
+            'is시가UpAgain' : False,   #시가 아래로 갔다 올라오면 True
+            '목표수익율'        : 2,        # 2% 수익나면 익절
+            '매수시현재가'      : 0,     # 매수가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+            {
+            '종목코드' : "317330",
+            'is시가Down'    : False,   #시가 아래로 내려가면 True
+            '주문수량'      : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'      : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder' : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음.
+            'is시가UpAgain' : False,   #시가 아래로 갔다 올라오면 True
+            '목표수익율'        : 2,        # 2% 수익나면 익절
+            '매수시현재가'      : 0,     # 매수가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+            {
+            '종목코드' : "405100",
+            'is시가Down'    : False,   #시가 아래로 내려가면 True
+            '주문수량'      : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'      : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder' : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음.
+            'is시가UpAgain' : False,   #시가 아래로 갔다 올라오면 True
+            '목표수익율'        : 2,        # 2% 수익나면 익절
+            '매수시현재가'      : 0,     # 매수가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+            {
+            '종목코드' : "399720",
+            'is시가Down'    : False,   #시가 아래로 내려가면 True
+            '주문수량'      : 10,       # 10주, 살수 있는 가격으로 나중에 계산 필요.
+            '매수금액'      : 2000000,  # 매수 금액이 필요할 수 있다.  
+            'CntAfterOrder' : 0,        # 매수 후 채결정보 받은 cnt,  매수후 바로 팔지 않도록 사용할 수 있음.
+            'is시가UpAgain' : False,   #시가 아래로 갔다 올라오면 True
+            '목표수익율'        : 2,        # 2% 수익나면 익절
+            '매수시현재가'      : 0,     # 매수가격
+            '매수시저가'        : 0,     # 매수시점 저점 가격 저장으로 매도시 사용 함.
+            '체결수신Cnt'       : 0,     # 체결정보 수신 Cnt
+            },
+            ]
+        for item in self.target_items:
+            print(item)
+            print(item['종목코드'])
+        
+
         # 계좌 예수금
         self.deposit = 0
 
@@ -73,8 +189,15 @@ class PBC_Buy1st (QThread):
     def check_and_get_target_items(self):
         """관심종목 존재하는지 확인하고 없으면 생성하는 함수"""
         fids = get_fid("체결시간")
-        codes = self.target_items['종목코드']
-        self.kiwoom.set_real_reg("9999", codes, fids, "0")
+        idx = 0
+        for item in self.target_items:
+            codes = item['종목코드']
+            print ('체결시간 실시간 요청 완료 :', codes)
+            if idx == 0:
+                self.kiwoom.set_real_reg("9999", codes, fids, "0")      # "0" 최초, "1" 추가 등록 
+                idx = idx + 1
+            else:
+                self.kiwoom.set_real_reg("9999", codes, fids, "1")      # 첨부터 1이어도 등록한다고는 함. 
        
     def run(self):
         """실질적 수행 역할을 하는 함수"""
@@ -86,8 +209,9 @@ class PBC_Buy1st (QThread):
                     # time.sleep(1 * 60)
                     # continue
 
-                for code in self.target_items:
-                    print (code)
+                for item in self.target_items:
+                    #print (code)
+                    code = item['종목코드']
 
                     # (1)접수한 주문이 있는지 확인
                     if code in self.kiwoom.order.keys():
@@ -97,18 +221,22 @@ class PBC_Buy1st (QThread):
                         # (2.1) '미체결수량' 확인하여 미체결 종목인지 확인
                         if self.kiwoom.order[code]['미체결수량'] > 0:
                             pass
+
                     # (3)보유 종목인지 확인
                     elif code in self.kiwoom.balance.keys():
-                        print('보유 종목', self.kiwoom.balance[code])
+                        #print('보유 종목', self.kiwoom.balance[code])
+                        print('보유수량', self.kiwoom.balance[code]['보유수량'])
                         # (6)매도 대상 확인
-                        if self.check_sell_signal(code):
-                            # (7)매도 대상이면 매도 주문 접수
-                            self.order_sell(code)
+                        if self.kiwoom.balance[code]['보유수량'] > 0:
+                            if self.check_sell_signal(code, item):
+                                # (7)매도 대상이면 매도 주문 접수
+                                # hts에서 매도해 보자. 
+                                print ("call order_sell")
+                                #self.order_sell(code)
 
                     else:
                         # (4)접수 주문 및 보유 종목이 아니라면 매수대상인지 확인 후 주문접수
-                        self.check_buy_signal_and_order(code)
-                        #print ("444")
+                        self.check_buy_signal_and_order(code,item)
 
                     time.sleep(0.3)
             except Exception as e:
@@ -116,9 +244,9 @@ class PBC_Buy1st (QThread):
                 # telegram 메시지를 보내는 부분
                 send_message_bot(traceback.format_exc(), 0)
 
-    def check_sell_signal(self, code):
+    def check_sell_signal(self, code, item):
         """매도대상인지 확인하는 함수"""
-        universe_item = self.universe[code]
+        #universe_item = self.universe[code]
 
         # (1)현재 체결정보가 존재하지 않는지 확인
         if code not in self.kiwoom.universe_realtime_transaction_info.keys():
@@ -137,12 +265,21 @@ class PBC_Buy1st (QThread):
         today_price_data = [open, high, low, close, volume]
         #print (today_price_data)
 
+        # 사자마자 팔지 않도록 조치가 필요하다. (때로는)
+        item['CntAfterOrder'] = item['CntAfterOrder'] + 1
+        if item['CntAfterOrder'] < 10:      #10번정도 체결정보를 받은 후 결정.
+            print ("매수한지 얼마 안되었다 조금 기다리자. ")
+            return False
+        
         # 다시 시가 아래로 내려가면 매도 (손절)
+        # 시가 아래로 내려오면 (50% 매도), 매수 할 당시의 저가를 내려가면 나머지 50% 매도 할 수도 있다. 
         if close < open: 
+            print ("시가아래로 내려감 ! 손절!!!")
             return True
         
         #수익보고 익절 해야 함. (익절)
-        if close > (open + ((open * 2) / 100)):
+        if close > (open + ((open * item['목표수익율']) / 100)):
+            print ("익절... 조건은 시가에 샀다고 치고..  내려감 ! 손절!!!")
             return True
 
         return False
@@ -155,20 +292,22 @@ class PBC_Buy1st (QThread):
         # 최우선 매도 호가 확인
         ask = self.kiwoom.universe_realtime_transaction_info[code]['(최우선)매도호가']
 
-        order_result = self.kiwoom.send_order('send_sell_order', '1001', 2, code, quantity, ask, '00')
+        order_result = self.kiwoom.send_order('send_sell_order', '1001', 2, code, quantity, ask, '03', '00')
 
         # LINE 메시지를 보내는 부분
         message = "[{}]sell order is done! quantity:{}, ask:{}, order_result:{}".format(code, quantity, ask,
                                                                                         order_result)
         send_message_bot(message, 0)
 
-    def check_buy_signal_and_order(self, code):
+    def check_buy_signal_and_order(self, code, item):
         """매수 대상인지 확인하고 주문을 접수하는 함수"""
 
         # 매수 가능 시간 확인
        # if not check_adjacent_transaction_closed():
         #    return False
         
+        print (item['종목코드'], "시가 아래: ",  item['is시가Down'])
+
         # (1)현재 체결정보가 존재하지 않는지 확인
         if code not in self.kiwoom.universe_realtime_transaction_info.keys():
             # 존재하지 않다면 더이상 진행하지 않고 함수 종료
@@ -187,20 +326,29 @@ class PBC_Buy1st (QThread):
 
         """ 매수조건
         1. 현재가가 시가 아래로 내렸갔다 올라와야 한다. 
+        2. 매수는 한종목 당 일일 1번만 한다. 
         """
+        if item['CntAfterOrder'] >= 1:
+            print ("오늘 한번 매수 했음")
+            return
 
         if close < open:
             # 시가 아래로 내려 갔다.
-            if self.target_items['is시가Down'] is not True:
-                self.target_items['is시가Down'] = True
+            if item['is시가Down'] is not True:
+                item['is시가Down'] = True
             pass    
 
+        # item['is시가Down'] = True      # test
         if close >= open:   #현재가가 시가보다 크거나 같으면.. (상승)
-            if self.target_items['is시가Down'] is True:
+            if item['is시가Down'] is True:
                 # 다시 올라오면 매수. 
+                item['is시가UpAgain'] = True
+                item['CntAfterOrder'] = 1           # 1이상이면 매수했다는 의미
+                item['매수시현재가'] = close
+                item['매수시저가'] = low
                 # 주문 수량
-                quantity = 10 
-                bid = close
+                quantity = item['주문수량']
+                bid = close         # 시장가 매수라 영향은 없을 것 같다. 
 
                 # (9)계산을 바탕으로 지정가(00), 시장가(03) 매수 주문 접수
                 order_result = self.kiwoom.send_order('send_buy_order', '1001', 1, code, quantity, bid, '03')
