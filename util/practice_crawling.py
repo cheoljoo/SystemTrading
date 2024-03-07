@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import numpy as np
 import pandas as pd
 from datetime import datetime
+import os
 
 BASE_URL = 'https://finance.naver.com/sise/sise_market_sum.nhn?sosok='
 CODES = [0, 1]  # KOSPI:0, KOSDAQ:1
@@ -21,6 +22,9 @@ def execute_crawler():
 
         # 전체 페이지 개수를 가져오기 위한 코드
         res = requests.get(BASE_URL + str(CODES[0]))
+        if not os.path.exists('NaverFinance-1.raw.txt'):
+            with open('NaverFinance-1.raw.txt','w') as f:
+                f.write(res.text)
         page_soup = BeautifulSoup(res.text, 'lxml')
 
         # '맨뒤'에 해당하는 태그를 기준으로 전체 페이지 개수 추출하기
@@ -68,15 +72,36 @@ def crawler(code, page):
     # 네이버로 요청을 전달(post방식)
     res = requests.post('https://finance.naver.com/sise/field_submit.nhn', data=data)
 
+    if not os.path.exists('NaverFinance-2.raw.txt'):
+        with open('NaverFinance-2.raw.txt','w') as f:
+            f.write(res.text)
     page_soup = BeautifulSoup(res.text, 'lxml')
 
     # 크롤링할 table의 html 가져오는 코드(크롤링 대상 요소의 클래스는 브라우저에서 확인)
     table_html = page_soup.select_one('div.box_type_l')
+    if not os.path.exists('NaverFinance-3.crawling.txt'):
+        with open('NaverFinance-3.crawling.txt','w') as f:
+            f.write(str(table_html))
 
     # column명을 가공
     header_data = [item.get_text().strip() for item in table_html.select('thead th')][1:-1]
 
     # 종목명 + 수치 추출 (a.title = 종목명, td.number = 기타 수치)
+    count = 0
+    for item in table_html.find_all(lambda x:
+                                                                          (x.name == 'a' and
+                                                                           'tltle' in x.get('class', [])) or
+                                                                          (x.name == 'td' and
+                                                                           'number' in x.get('class', []))
+                                                                          ):
+        if not os.path.exists('NaverFinance-4-{c}.txt'.format(c=count)):
+            with open('NaverFinance-4-{c}.txt'.format(c=count),'w') as f:
+                f.write(str(item.get_text()) + '\nitem: '+str(item))
+        
+        count += 1
+        if count > 9:
+            break
+        
     inner_data = [item.get_text().strip() for item in table_html.find_all(lambda x:
                                                                           (x.name == 'a' and
                                                                            'tltle' in x.get('class', [])) or
